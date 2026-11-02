@@ -1,0 +1,36 @@
+name: Validate skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GIT_CONFIG_COUNT: 1
+  GIT_CONFIG_KEY_0: init.defaultBranch
+  GIT_CONFIG_VALUE_0: main
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      UPSTREAM_TOKEN: ${{ secrets.UPSTREAM_TOKEN }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - name: Set up toolchains
+        uses: jdx/mise-action@df8210ba1f29954aed392b1087dace56ca1d7854
+      - name: Validate all bundles
+        run: |
+          bun test
+          bun run check
+          bun run sync -- --check
+          bun run validate
+          lychee --offline --no-progress './**/*.md'
+          actionlint .github/workflows/*.yml
+          git diff --check

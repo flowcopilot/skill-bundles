@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "bundles": {
+    "writing": {
+      "mattpocock": {
+        "repository": "https://github.com/mattpocock/skills.git",
+        "ref": "main",
+        "root": "skills/productivity",
+        "revision": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+        "licenseSha256": "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5",
+        "licenseFile": "LICENSE",
+        "spdx": "MIT"
+      },
+      "pstack": {
+        "repository": "https://github.com/cursor/plugins.git",
+        "ref": "main",
+        "root": "pstack/skills",
+        "revision": "ae5650febf4320793844c12c4adaa937f417f8da",
+        "licenseSha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+        "licenseFile": "pstack/LICENSE",
+        "spdx": "MIT"
+      }
+    }
+  }
+}

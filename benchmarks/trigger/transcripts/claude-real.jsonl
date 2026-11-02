@@ -1,0 +1,3 @@
+{"type": "system", "subtype": "init", "cwd": "/workspace"}
+{"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "toolu_01SGruoAKa85MXrzA6sLpdsu", "name": "Read", "input": {"file_path": "/workspace/skills/writing/SKILL.md"}}]}}
+{"type": "user", "message": {"content": [{"tool_use_id": "toolu_01SGruoAKa85MXrzA6sLpdsu", "type": "tool_result", "content": "[File output omitted from the real capture.]"}]}}

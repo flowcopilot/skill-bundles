@@ -1,0 +1,2 @@
+{"type": "item.started", "item": {"id": "item_0", "type": "command_execution", "command": "/bin/zsh -lc 'cat skills/writing/SKILL.md'", "aggregated_output": "[File output omitted from the real capture.]", "exit_code": null, "status": "in_progress"}}
+{"type": "item.completed", "item": {"id": "item_0", "type": "command_execution", "command": "/bin/zsh -lc 'cat skills/writing/SKILL.md'", "aggregated_output": "[File output omitted from the real capture.]", "exit_code": 0, "status": "completed"}}
