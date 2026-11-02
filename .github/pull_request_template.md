@@ -1,26 +1,42 @@
-<!-- Write for a reviewer who will not open the files. Delete sections that do not apply. -->
+<!--
+Write for a reviewer who will not open the files. Short prose.
+Delete any section that does not apply.
+-->
 
 ## Why
 
-<!-- Name the problem and the resulting behavior. Link a failed run or issue when relevant. -->
+<!-- One or two sentences: the problem or the goal. Link the failed sync run, issue, or thread if there is one. -->
 
 ## What changes
 
-<!-- Show the before and after with a short example, table, diff, or diagram. For a sync, name the changed bundles and source revisions. Separate upstream instruction changes from attribution-only changes. -->
+<!--
+One diagram with a Before and an After. For a new thing, write "Before: none."
 
-**Look at:** <!-- The config, guard, patch, or engine decision that needs review. -->
+Pick the diagram with one question: does the next step wait for something
+outside the system, which can come late, come wrong, or not come?
+- Yes: a Mermaid state diagram (stateDiagram-v2). An outside input is a
+  user action, a reply from a service or a subagent, a webhook, a timer, or
+  a cancel. A state is a place where the thing waits, for example
+  "Waiting for the user's answer" in a skill step. An arrow is the event
+  that moves it on. Draw the bad events too: timeout, error, cancel, retry.
+- No, and it is control flow inside the code: a call tree.
+- No, and it is data flow or how components interact: a Mermaid flowchart.
+- No diagram fits (a bundle description, a version pin, a rename, a config
+  value): a table of old and new values, or a diff.
 
-## Evidence
+Add up to three bullets for what the diagram misses. For a sync, name the
+bundles and upstream revisions that changed. For a description change, give
+the load counts from the trigger benchmark.
+-->
 
-<!-- CI runs unit tests, structure and reach checks, pinned regeneration, Agent Skills validation, offline links, workflow lint, and whitespace checks. Report the checks you ran. After engine changes, run sync twice and state whether the second run changed anything. Trigger runs are optional and use paid model CLIs. State what remains unchecked. -->
+## Risk
 
-## Merge danger
-
-**Door:** <!-- one-way for license or distributed attribution changes, or two-way when a revert fixes it -->
-**Blast radius:** <!-- affected bundles or commands -->
-
-<!-- State what can break for consumers. Files in skills/ are generated. Local edits belong in bundles/<name>/ config, templates, files, or patches. Explain any changed guard or license acceptance. -->
+<!--
+Only when a revert can't undo the change, or the change touches a license,
+attribution, secrets, or copies that consumers already installed. One or two
+plain sentences: what breaks, and for whom.
+-->
 
 ## After merge
 
-<!-- List manual steps, such as reinstalling a bundle or setting SYNC_TOKEN. Delete this section when no step applies. -->
+<!-- Manual steps in order: reinstall a bundle, run the sync workflow by hand, or set SYNC_TOKEN. Delete if none. -->

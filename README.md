@@ -46,7 +46,7 @@ Private installation with `npx skills add` is not verified by this template's te
 
 ## Set up the repository
 
-Enable GitHub Actions and Issues. Add a ruleset for `main` that requires a pull request and the `validate` check. On GitHub Free, only public repositories can have rulesets. Allow the workflow to push `automation/sync-upstream-skills`. Set the secrets described above.
+Enable GitHub Actions and Issues. Add a ruleset for `main` that requires a pull request and the `validate` check. On GitHub Free, only public repositories can have rulesets. Allow the workflow to push `automation/sync-upstream-skills`. Set the secrets described above. Turn on secret scanning and push protection. Dependabot checks the pinned workflow actions each month. Renovate checks the tools in `mise.toml` each month. Install the [Renovate GitHub app](https://github.com/apps/renovate) for the repository to get its pull requests.
 
 The weekly sync updates this bot branch with `--force-with-lease`. With `SYNC_TOKEN`, it opens or updates one pull request. Without it, the workflow writes a compare link to the run summary. A pull request created with `GITHUB_TOKEN` does not start the validation workflow. A failed sync opens or updates the issue **Upstream sync failed**.
 
