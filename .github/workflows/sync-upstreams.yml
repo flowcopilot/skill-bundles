@@ -70,23 +70,20 @@ jobs:
 
           ## What changes
 
-          The bundles, source pins, licenses, and attribution are regenerated from bundle config.
-          Review instruction changes and license changes before merge.
-
-          **Look at:** `upstreams.lock.json` and the imported references under `skills/`.
-
-          ## Evidence
-
-          Unit tests, structure and reach checks, pinned regeneration, Agent Skills validation,
-          offline links, workflow lint, and whitespace checks passed in the sync run.
-
-          ## Merge danger
-
-          **Door:** two-way for instructions. Installed copies require a separate update.
-          **Blast radius:** the bundles listed below.
+          The sync regenerated the bundles, source pins, licenses, and attribution from bundle config.
+          Each source is now at this revision:
 
           BODY
           bun -e 'const lock = await Bun.file("upstreams.lock.json").json(); for (const [bundle, sources] of Object.entries(lock.bundles)) for (const [id, pin] of Object.entries(sources)) console.log("- " + bundle + "/" + id + ": " + pin.revision)' >> .cache/sync-pr.md
+          cat >> .cache/sync-pr.md <<'BODY'
+
+          **Look at:** `upstreams.lock.json` and the imported references under `skills/`.
+
+          ## Risk
+
+          Installed copies of the bundles keep the old text until consumers update them.
+          Review license changes before merge.
+          BODY
       - name: Update the sync branch
         if: steps.changes.outputs.changed == 'true'
         env:

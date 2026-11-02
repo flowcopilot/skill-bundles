@@ -93,7 +93,7 @@ git diff --check
 ## Git
 
 - Work on a branch. The default branch takes changes only through pull requests.
-- Fill in `.github/pull_request_template.md` for every PR body, and delete the sections that do not apply. `gh pr create --body` skips the template, so copy it yourself. List the commands that you ran and their results.
+- Fill in `.github/pull_request_template.md` for every PR body, and delete the sections that do not apply. `gh pr create --body` skips the template, so copy it yourself. Leave out checks and test runs. Report them to the user in the conversation.
 - Check that `git status` is clean before you open the PR, except for files you meant to change.
 
 Read `DEVELOPMENT.md` for the config schema, the import rules, license handling, and the workflows.
