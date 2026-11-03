@@ -18,7 +18,7 @@ This GitHub template includes a config-driven sync engine and a small [writing b
 
 To start by hand, follow the [development reference](DEVELOPMENT.md).
 
-The example combines `mattpocock/skills` writing-for-agents and `cursor/plugins` technical-writing. Both use MIT. The router preserves upstream invocation flags. The technical-writing reference is available only when the user asks for it by name.
+The example combines `mattpocock/skills` writing-for-agents and `cursor/plugins` technical-writing. Both use MIT. The router preserves upstream invocation flags. The technical-writing reference is available only when the user asks for it by name. The example sets `metadata.internal: true`, so `npx skills add` does not list it or install it with the other bundles. It installs only when you name it with `--skill writing`.
 
 ## Install a bundle
 
