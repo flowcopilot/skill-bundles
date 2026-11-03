@@ -28,7 +28,7 @@ function setup() {
   const config: Bundle = { sources: [source] };
   const save = () => write(resolve(repo, "bundles/writing/bundle.json"), JSON.stringify(config));
   save();
-  write(resolve(repo, "bundles/writing/SKILL.md"), "---\nname: writing\ndescription: Load this skill before you edit docs in a project with README.md. Covers prose and docs.\n---\n\n{{routes}}\n\n{{excluded}}\n\n{{sources}}\n");
+  write(resolve(repo, "bundles/writing/SKILL.md"), "---\nname: writing\ndescription: Load this skill before you edit docs in a project with README.md. Covers prose and docs.\n---\n\n{{routes}}\n\n{{excluded}}\n");
   const entry = resolve(repo, "skills/writing/references/one/alpha/index.md");
   return { root, upstream, repo, config, source, save, entry, revision };
 }
@@ -195,7 +195,27 @@ test("bun run new creates an internal bundle", () => {
     write(resolve(root, "skill-bundles.json"), readFileSync(resolve(import.meta.dir, "../skill-bundles.json"), "utf8"));
     expect(Bun.spawnSync([process.execPath, resolve(root, "scripts/new.ts"), "demo"], { cwd: root }).exitCode).toBe(0);
     expect(metadata(readFileSync(resolve(root, "bundles/demo/SKILL.md"), "utf8")).data.metadata).toEqual({ internal: true });
+    expect(readFileSync(resolve(root, "bundles/demo/SKILL.md"), "utf8")).not.toMatch(/\{\{sources\}\}|^#+ Sources/m);
   } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("the source marker names no revision, and the check rejects one that does", () => {
+  const f = setup(); sync(f.repo, { update: true });
+  const text = readFileSync(f.entry, "utf8");
+  expect(text).toContain(`${marker({ attribution: "Example", author: "example", defaultBranch: "main" }, sourceName(f.source.repository))}\n`);
+  expect(text).not.toContain(f.revision);
+  write(f.entry, text.replace(/(<!-- Modified by Example from [^\n]*?)\. -->/, `$1 revision ${f.revision}. -->`));
+  expect(check(f.repo).join("\n")).toContain("missing attribution after frontmatter");
+});
+
+test("routers cannot list sources", () => {
+  const f = setup(); sync(f.repo, { update: true });
+  const router = resolve(f.repo, "bundles/writing/SKILL.md");
+  const original = readFileSync(router, "utf8");
+  write(router, `${original}\n{{sources}}\n`);
+  expect(() => sync(f.repo)).toThrow("remove {{sources}}");
+  write(router, `${original}\n## Sources\n\nNone.\n`);
+  expect(check(f.repo).join("\n")).toContain('remove the "Sources" section');
 });
 
 test("the content check rejects unfilled placeholders from bun run new", () => {

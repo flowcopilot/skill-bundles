@@ -66,8 +66,9 @@ export function parseSkill(file: string) {
   if (data["disable-model-invocation"] !== undefined && typeof data["disable-model-invocation"] !== "boolean") throw new Error(`${file}: disable-model-invocation must be boolean`);
   return { text, name: data.name, description: data.description.replace(/\s+/g, " ").trim(), explicit: data["disable-model-invocation"] === true };
 }
-export function marker(settings: Settings, source: string, revision: string) {
-  return `<!-- Modified by ${settings.attribution} from ${source} revision ${revision}. -->`;
+// Agents read this line, so it names only the source. NOTICE.md and upstreams.lock.json hold the revision.
+export function marker(settings: Settings, source: string) {
+  return `<!-- Modified by ${settings.attribution} from ${source}. -->`;
 }
 export function sourceName(repository: string) {
   return repository.match(/(?:github\.com[:/])([^/]+\/[^/]+?)(?:\.git)?$/)?.[1] ?? repository;

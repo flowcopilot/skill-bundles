@@ -59,6 +59,7 @@ Load this skill before you read or change code in a project whose package.json l
 
 - Link each included skill with `{{routes}}`. Link leaf files directly, not an index of indexes.
 - Agents read the whole router each time they load the bundle. Keep it short. Use `{{excluded}}` only for a short list.
+- Do not add a section about sources, attribution, or licenses to the router, and do not add a revision to the `Modified by` marker. Agents read both on every load, and `NOTICE.md` and `upstreams.lock.json` already hold that information. `bun run check` fails on a `Sources` or `Attribution` heading.
 - Write that paths in the router are relative to the folder that contains `SKILL.md`.
 - Call an imported skill a reference, and link its file. Do not tell agents to load a "skill" that exists only inside this bundle.
 - List skills whose upstream flag is `disable-model-invocation: true` under the "Use only when the user asks for it by name" section that `{{routes}}` makes.

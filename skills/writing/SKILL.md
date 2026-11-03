@@ -23,8 +23,3 @@ Paths in this file are relative to the folder that contains this SKILL.md.
 ### Use only when the user asks for it by name
 
 - [technical-writing](references/pstack/technical-writing/index.md): Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages. (`disable-model-invocation: true`)
-
-## Sources
-
-- mattpocock: https://github.com/mattpocock/skills.git revision `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`.
-- pstack: https://github.com/cursor/plugins.git revision `ae5650febf4320793844c12c4adaa937f417f8da`.

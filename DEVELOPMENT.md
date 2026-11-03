@@ -37,10 +37,10 @@ Zero bundles is valid. Sync removes stale output on a full run. `--only` preserv
 The marker appears after YAML frontmatter, or at the start when no frontmatter exists:
 
 ```text
-<!-- Modified by Your Org from owner/repo revision <40-character-sha>. -->
+<!-- Modified by Your Org from owner/repo. -->
 ```
 
-The checker and benchmark read the attribution setting. GitHub source names use `owner/repo`. Other hosts keep the repository URL.
+The marker names no revision, because agents read it each time they open the file. `NOTICE.md` and `upstreams.lock.json` hold the pinned revision. The checker fails on a marker in any other form. The checker and benchmark read the attribution setting. GitHub source names use `owner/repo`. Other hosts keep the repository URL.
 
 ## Bundle config
 
@@ -90,9 +90,8 @@ The engine expands these placeholders:
 | `{{routes}}` | All included references, grouped by source, with upstream descriptions. |
 | `{{routes:<id>}}` | Routes for one source id. |
 | `{{excluded}}` | Excluded skill names and upstream links at the pinned revision. |
-| `{{sources}}` | Repository and pinned revision for each source. |
 
-Agents read the whole router each time they load the bundle, so every line costs context. Use `{{excluded}}` only when the excluded list is short, or when users can ask for an excluded skill. The import already links excluded siblings that an imported reference mentions to their upstream files. `bun run new` writes `REPLACE_WITH_` placeholders, and `bun run check` fails until you replace them all.
+Agents read the whole router each time they load the bundle, so every line costs context. Do not add a section about sources, attribution, or licenses. `NOTICE.md` and `upstreams.lock.json` already hold them. Sync stops on the removed `{{sources}}` placeholder, and `bun run check` fails on a heading such as `Sources` or `Attribution`. Use `{{excluded}}` only when the excluded list is short, or when users can ask for an excluded skill. The import already links excluded siblings that an imported reference mentions to their upstream files. `bun run new` writes `REPLACE_WITH_` placeholders, and `bun run check` fails until you replace them all.
 
 Unknown placeholders stop sync. Routes preserve `disable-model-invocation: true` under **Use only when the user asks for it by name**. The router must keep this rule visible. Paths in the router are relative to its `SKILL.md` folder. Each route points directly to an imported `index.md`. Read that reference as a file.
 

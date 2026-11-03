@@ -22,6 +22,8 @@ export function check(root = repositoryRoot): string[] {
       for (const entry of [resolve(root, "bundles", name, "SKILL.md"), resolve(target, "SKILL.md")]) {
         const routerText = readFileSync(entry, "utf8");
         if (routerText.includes("REPLACE_WITH_")) errors.push(`${entry}: replace every REPLACE_WITH_ placeholder from bun run new`);
+        const sourceHeading = routerText.match(/^#+ (Sources?|Attribution|Credits|Provenance|Licen[cs]es?)\s*$/im);
+        if (sourceHeading) errors.push(`${entry}: remove the "${sourceHeading[1]}" section; NOTICE.md and upstreams.lock.json already name the sources`);
         const { data } = metadata(routerText, entry);
         if (data.name !== name) errors.push(`${entry}: name must be ${name}`);
         const description = data.description;
@@ -65,7 +67,7 @@ export function check(root = repositoryRoot): string[] {
         for (const file of files.filter((file) => relative(target, file).startsWith(`references/${source.id}/`) && /\.md$/i.test(file))) {
           const text = readFileSync(file, "utf8");
           const header = text.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/)?.[0] ?? "";
-          if (!text.slice(header.length).trimStart().startsWith(marker(settings, sourceName(source.repository), pin.revision))) errors.push(`${name}/${relative(target, file)}: missing attribution after frontmatter`);
+          if (!text.slice(header.length).trimStart().startsWith(marker(settings, sourceName(source.repository)))) errors.push(`${name}/${relative(target, file)}: missing attribution after frontmatter`);
         }
       }
     } catch (error) { errors.push(`${name}: ${error}`); }
