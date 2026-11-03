@@ -28,7 +28,7 @@ jobs:
       UPSTREAM_TOKEN: ${{ secrets.UPSTREAM_TOKEN }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
           token: ${{ secrets.SYNC_TOKEN || github.token }}
