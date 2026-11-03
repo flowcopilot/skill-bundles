@@ -7,5 +7,5 @@ if (args.length !== 1 || !identifier(name)) throw new Error("Usage: bun run new 
 const target = resolve(repositoryRoot, "bundles", name);
 if (existsSync(target)) throw new Error(`Bundle already exists: ${name}`);
 write(resolve(target, "bundle.json"), '{ "sources": [] }\n');
-write(resolve(target, "SKILL.md"), `---\nname: ${name}\ndescription: Load this skill before you change code in a project with REPLACE_WITH_PROJECT_SIGNAL, or when the task names REPLACE_WITH_PRODUCT. Covers REPLACE_WITH_TOPICS.\n---\n\n# ${name}\n\nPaths in this file are relative to the folder that contains this SKILL.md.\n\nREPLACE_WITH_ROUTING: one line per task type that names the reference to read.\n\n{{routes}}\n\n## Sources\n\n{{sources}}\n`);
+write(resolve(target, "SKILL.md"), `---\nname: ${name}\nmetadata:\n  internal: true\ndescription: Load this skill before you change code in a project with REPLACE_WITH_PROJECT_SIGNAL, or when the task names REPLACE_WITH_PRODUCT. Covers REPLACE_WITH_TOPICS.\n---\n\n# ${name}\n\nPaths in this file are relative to the folder that contains this SKILL.md.\n\nREPLACE_WITH_ROUTING: one line per task type that names the reference to read.\n\n{{routes}}\n\n## Sources\n\n{{sources}}\n`);
 console.log(`Created bundles/${name}. Run bun run sources before you add sources.`);

@@ -34,7 +34,7 @@ To install for your user account, add `--global`:
 npx skills add <owner>/<repo> --skill writing --global
 ```
 
-Replace `<owner>/<repo>` with the repository created from this template. Replace `writing` with the bundle you want. Run `skills add` on each new machine. An update command does not install a missing bundle. After installation, check that the skill appears in your agent's skill list.
+A new bundle is hidden from `npx skills add` until you approve it and the agent removes `metadata.internal: true`. Until then, install it by name with `--skill`. Replace `<owner>/<repo>` with the repository created from this template. Replace `writing` with the bundle you want. Run `skills add` on each new machine. An update command does not install a missing bundle. After installation, check that the skill appears in your agent's skill list.
 
 ## Use private repositories
 

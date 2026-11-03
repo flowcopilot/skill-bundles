@@ -23,13 +23,21 @@ Follow these steps in order when the user asks to bundle, combine, or track skil
 1. Settle the plan with the user. Ask in short rounds, with one recommended answer for each question. Settle the bundle name, the upstream repositories, the skills to include, and the tasks that should load the bundle. Name the bundle for its topic (`react-native`, not `callstack`), short and in kebab case. Ask each question once, and record the answer in the PR body.
 2. Fetch, then branch from the up-to-date default branch that `skill-bundles.json` names: `git switch -c feat/<name>-bundle origin/main`. Without a remote, branch from the local default branch.
 3. For each upstream, run `bun run sources -- <repository>`. It lists every skill, its description, its invocation flag, and the license files. Compare the list with the user's request, and report each skill that the user named but the upstream does not have, or has at another path.
-4. Run `bun run new -- <name>`. In `bundles/<name>/bundle.json`, add one source per upstream. The schema is in `DEVELOPMENT.md` under "Bundle config". Put every upstream skill under `root` in `include` or `exclude`. Set `license` from the upstream license file. If an upstream has no license file or no license that allows redistribution, stop and ask the user.
+4. Run `bun run new -- <name>`. It sets `metadata.internal: true` in the router. Keep it. See "Internal bundles". In `bundles/<name>/bundle.json`, add one source per upstream. The schema is in `DEVELOPMENT.md` under "Bundle config". Put every upstream skill under `root` in `include` or `exclude`. Set `license` from the upstream license file. If an upstream has no license file or no license that allows redistribution, stop and ask the user.
 5. Write the router in `bundles/<name>/SKILL.md`, and replace every `REPLACE_WITH_` placeholder. Follow "Descriptions" and "Routers" below.
 6. Run `bun run sync -- --update --only <name>`. Run `bun run sync -- --only <name>` again and confirm that `git status` shows no new change.
 7. Run the checks in "Before you finish". Read `skills/<name>/SKILL.md` as the agent that loads it would read it, and open two linked references.
 8. Commit, push the branch, and open a PR when the user asks for it. Fill in `.github/pull_request_template.md`.
 
-The bundle is done when the checks pass, a second sync changes nothing, and every included upstream skill is reachable from the router.
+The bundle is done when the checks pass, a second sync changes nothing, and every included upstream skill is reachable from the router. It stays internal until the user signs it off.
+
+## Internal bundles
+
+The `npx skills add` command of the skills CLI hides a bundle whose router frontmatter sets `metadata.internal: true`. The value must be the boolean `true`. The string `"true"` does not hide the bundle. A user can still install a hidden bundle by name with `--skill <name>`, or list it with `INSTALL_INTERNAL_SKILLS=1`.
+
+- Every new bundle starts internal. `bun run new` adds the setting.
+- Remove `internal: true` only when the user says that the bundle is ready to publish. Passing checks are not a sign-off.
+- Keep the example `writing` bundle internal.
 
 ## Descriptions
 

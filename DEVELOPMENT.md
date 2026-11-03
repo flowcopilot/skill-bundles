@@ -96,7 +96,7 @@ Agents read the whole router each time they load the bundle, so every line costs
 
 Unknown placeholders stop sync. Routes preserve `disable-model-invocation: true` under **Use only when the user asks for it by name**. The router must keep this rule visible. Paths in the router are relative to its `SKILL.md` folder. Each route points directly to an imported `index.md`. Read that reference as a file.
 
-The engine adds `license` from the sorted set of source SPDX ids, joined with `AND`. It sets `metadata.author` from repository settings and preserves other router metadata. Metadata values are strings, except `internal`. Set `metadata.internal: true` to hide a bundle from `npx skills add` until a user names it with `--skill`. The example `writing` bundle uses it. A bundle with no sources uses the template's MIT license.
+The engine adds `license` from the sorted set of source SPDX ids, joined with `AND`. It sets `metadata.author` from repository settings and preserves other router metadata. Metadata values are strings, except `internal`. Set `metadata.internal: true` to hide a bundle from `npx skills add` until a user names it with `--skill`. `bun run new` sets it on every new bundle. Remove it when the bundle is ready to publish. A bundle with no sources uses the template's MIT license.
 
 ## Import rules
 
