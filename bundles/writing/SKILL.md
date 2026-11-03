@@ -13,7 +13,3 @@ Paths in this file are relative to the folder that contains this SKILL.md.
 - When the user asks for technical writing by name, read technical-writing before you write docs, READMEs, RFCs, PR descriptions, or commit messages.
 
 {{routes}}
-
-## Sources
-
-{{sources}}

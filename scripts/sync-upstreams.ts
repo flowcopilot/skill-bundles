@@ -54,7 +54,7 @@ export function writeSkillTree(tree: ReturnType<typeof readSkillTree>, source: S
   for (const file of tree.files) {
     const path = relative(tree.sourceRoot, file);
     const destination = safePath(sourceTarget, path.replace(/(^|\/)SKILL\.md$/, "$1index.md"));
-    if (/\.md$/i.test(file)) writeMarkdown(destination, rewriteLocalPaths(readFileSync(file, "utf8"), path, source, revision, tree.names), marker(settings, sourceName(source.repository), revision));
+    if (/\.md$/i.test(file)) writeMarkdown(destination, rewriteLocalPaths(readFileSync(file, "utf8"), path, source, revision, tree.names), marker(settings, sourceName(source.repository)));
     else copy(file, destination);
     if (statSync(file).mode & 0o111) run(["chmod", "+x", destination], target);
   }
@@ -125,7 +125,6 @@ export function sync(root = repositoryRoot, options: SyncOptions = {}) {
       lock.bundles[name] = {};
       const routeMap: Record<string, string> = {};
       const excluded: string[] = [];
-      const sources: string[] = [];
       for (const source of config.sources) {
         const previous = originalLock.bundles[name]?.[source.id];
         if (!options.update && (!previous || previous.repository !== source.repository || previous.ref !== source.ref || previous.root !== source.root || previous.licenseFile !== source.license.file || previous.spdx !== source.license.spdx)) throw new Error(`${name}/${source.id}: source has no matching pin; run sync -- --update`);
@@ -143,7 +142,6 @@ export function sync(root = repositoryRoot, options: SyncOptions = {}) {
         lock.bundles[name][source.id] = { repository: source.repository, ref: source.ref, root: source.root, revision, licenseSha256, licenseFile: source.license.file, spdx: source.license.spdx };
         routeMap[source.id] = skillRoutes(source, tree);
         excluded.push(...source.exclude.map((skill) => `- ${source.id}: [${skill}](${upstreamURL(source.repository, revision, `${source.root}/${skill}/SKILL.md`)})`));
-        sources.push(`- ${source.id}: ${source.repository} revision \`${revision}\`.`);
       }
       const local = resolve(root, "bundles", name, "files");
       for (const file of filesUnder(local)) {
@@ -157,7 +155,7 @@ export function sync(root = repositoryRoot, options: SyncOptions = {}) {
         if (key === "routes") return Object.values(routeMap).join("\n\n");
         if (key.startsWith("routes:") && key.slice(7) in routeMap) return routeMap[key.slice(7)];
         if (key === "excluded") return excluded.join("\n") || "None.";
-        if (key === "sources") return sources.join("\n") || "None.";
+        if (key === "sources") throw new Error(`${name}: remove {{sources}}; NOTICE.md and upstreams.lock.json already name the sources`);
         throw new Error(`${name}: unknown router placeholder {{${key}}}`);
       });
       write(resolve(target, "SKILL.md"), router);
