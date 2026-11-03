@@ -38,11 +38,13 @@ def validate_bundle(directory: Path) -> list[str]:
             problems.append("compatibility must be non-empty when provided")
         if "metadata" in metadata:
             values = metadata["metadata"]
+            # The skills CLI hides a skill only when metadata.internal is the boolean true.
             if not isinstance(values, dict) or not all(
-                isinstance(key, str) and isinstance(value, str)
+                isinstance(key, str)
+                and (isinstance(value, str) or (key == "internal" and isinstance(value, bool)))
                 for key, value in values.items()
             ):
-                problems.append("metadata must map string keys to string values")
+                problems.append("metadata must map string keys to string values, except a boolean internal")
     except (OSError, ValueError, TypeError, yaml.YAMLError) as error:
         problems.append(f"Cannot validate SKILL.md: {error}")
     return problems

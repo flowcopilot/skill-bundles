@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "bun:test";
-import { chmodSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, symlinkSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { bundleAt, filesUnder, json, marker, metadata, rewriteLocalPaths, run, sourceName, write, type Bundle, type Lock, type Source } from "./lib";
@@ -186,6 +186,16 @@ test("the content check rejects output leaks and attribution drift", () => {
   expect(errors).toContain("token-like string"); expect(errors).toContain("harness placeholder");
   write(f.entry, readFileSync(f.entry, "utf8").replace("Modified by Example", "Modified by Other"));
   expect(check(f.repo).join("\n")).toContain("missing attribution after frontmatter");
+});
+
+test("bun run new creates an internal bundle", () => {
+  const root = mkdtempSync(resolve(cache, "new-"));
+  try {
+    cpSync(resolve(import.meta.dir), resolve(root, "scripts"), { recursive: true });
+    write(resolve(root, "skill-bundles.json"), readFileSync(resolve(import.meta.dir, "../skill-bundles.json"), "utf8"));
+    expect(Bun.spawnSync([process.execPath, resolve(root, "scripts/new.ts"), "demo"], { cwd: root }).exitCode).toBe(0);
+    expect(metadata(readFileSync(resolve(root, "bundles/demo/SKILL.md"), "utf8")).data.metadata).toEqual({ internal: true });
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test("the content check rejects unfilled placeholders from bun run new", () => {

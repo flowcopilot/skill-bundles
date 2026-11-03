@@ -1,5 +1,7 @@
 ---
 name: writing
+metadata:
+  internal: true
 description: Load this skill before you write agent instructions in a project with AGENTS.md or SKILL.md, or when the task names technical writing. Covers agent instructions, skill descriptions, docs, RFCs, PR descriptions, and commit messages.
 ---
 
